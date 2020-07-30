@@ -9,6 +9,8 @@ export const videoPlayerInit = () => {
    const videoVolume = document.querySelector('.video-volume');
    const videoFullScreen = document.querySelector('.video-fullscreen');
 
+   const addZero = n => n < 10 ? '0' + n : n;
+
    // ЗАмена иконки плеера
    const toggleIcon = () => {
       if (videoPlayer.paused) {
@@ -41,9 +43,6 @@ export const videoPlayerInit = () => {
       }
    };
 
-   // Добавление нулей для красоты
-   const addZero = n => n < 10 ? '0' + n : n;
-
    videoPlayer.addEventListener('click', togglePlay);
    videoButtonPlay.addEventListener('click', togglePlay);
 
@@ -68,7 +67,7 @@ export const videoPlayerInit = () => {
       videoTimeTotal.textContent = `${addZero(minuteTotal)}:${addZero(secondsTotal)}`;
    });
 
-   videoProgress.addEventListener('change', () => {
+   videoProgress.addEventListener('input', () => {
       const duration = videoPlayer.duration;
       const value = videoProgress.value;
 
