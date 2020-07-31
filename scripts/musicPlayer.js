@@ -9,13 +9,16 @@ export const musicPlayerInit = () => {
    const audioProgressTiming = document.querySelector('.audio-progress__timing');
    const audioTimePassed = document.querySelector('.audio-time__passed');
    const audioTimeTotal = document.querySelector('.audio-time__total');
+   const musicVolume = document.querySelector('.music-volume__range');
 
-   const playList = ['hello', 'flow', 'speed', 'psychodelic'];
+   const playList = ['hello', 'flow', 'speed']; // Список песен
 
    let trackIndex = 0; // С какой песни стартуем
 
+   // Делаем красивый вывод времени проигрывания песни
    const addZero = n => n < 10 ? '0' + n : n;
    
+   // Загрузка песни
    const loadTrack = () => {
       const isPlayed = audioPlayer.paused;
       const track = playList[trackIndex];
@@ -30,6 +33,20 @@ export const musicPlayerInit = () => {
       }
    };
 
+   // Меняем иконку проигрывателя
+   const changeIconPlay = () => {
+      if (audioPlayer.paused) {
+         audio.classList.remove('play');
+         audioButtonPlay.classList.add('fa-play');
+         audioButtonPlay.classList.remove('fa-pause');
+      } else {
+         audio.classList.add('play');
+         audioButtonPlay.classList.remove('fa-play');
+         audioButtonPlay.classList.add('fa-pause');
+      }
+   };
+
+   // Следующая песня
    const nextTrack = () => {
       if (trackIndex === playList.length - 1) {
          trackIndex = 0;
@@ -39,6 +56,7 @@ export const musicPlayerInit = () => {
       loadTrack();
    };
 
+   // Предыдущая песня
    const prevTrack = () => {
       if (trackIndex !== 0) {
          trackIndex--;
@@ -46,6 +64,24 @@ export const musicPlayerInit = () => {
          trackIndex = playList.length - 1;
       }
       loadTrack();
+   };
+
+   // Играем или останавливаемся
+   const togglePlay = () => {
+      if (audioPlayer.paused) {
+         audioPlayer.play();
+      } else {
+         audioPlayer.pause();
+      }
+   };
+
+   // Играем/останавливаем плеер клавишей space
+   const spacePlay = event => {
+      if (audio.classList.contains('active')) {
+         if (event.keyCode === 32) {
+            togglePlay();
+         }
+      }
    };
 
    audioNavigation.addEventListener('click', event => {
@@ -66,10 +102,12 @@ export const musicPlayerInit = () => {
          audioHeader.textContent = track.toUpperCase();
       }
 
+      // Предыдущая песня
       if (target.classList.contains('audio-button__prev')){
          prevTrack();
       }
 
+      // Следующая песня
       if (target.classList.contains('audio-button__next')){
          nextTrack();
       }
@@ -113,7 +151,17 @@ export const musicPlayerInit = () => {
          const seconds = Math.floor(progress % 60) || '0';
          audioProgress.setAttribute('title', `${addZero(minutes)}:${addZero(seconds)}`);
       });
+
+      // Регулирование громкости
+      musicVolume.addEventListener('input', () => {
+         audioPlayer.volume = musicVolume.value / 100;
+      })
       
    });
+
+   audioPlayer.addEventListener('play', changeIconPlay);
+   audioPlayer.addEventListener('pause', changeIconPlay);
+
+   document.body.addEventListener('keydown', spacePlay);
 
 };

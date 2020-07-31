@@ -12,10 +12,22 @@ const deactivationPlayer = () => {
       playerBlock.forEach(item => item.classList.remove('active'));
 };
 
+const stopPlayer = () => {
+      playerBtn.forEach((btn, i) => {
+            const block = playerBlock[i];
+            if (!block.classList.contains('active')){
+                  const player = block.querySelector('.player');
+                  player.pause()
+                  player.currentTime = 0;
+            }
+      })
+};
+
 playerBtn.forEach((btn, i) => btn.addEventListener('click', () => {
       deactivationPlayer();
       btn.classList.add('active');
       playerBlock[i].classList.add('active');
+      stopPlayer();
 }));
 
 radioPlayerInit();

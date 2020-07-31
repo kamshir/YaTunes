@@ -8,12 +8,15 @@ export const radioPlayerInit = () => {
    const radioVolumeRange = document.querySelector('.radio-volume__range');
 
    const audio = new Audio();
+   audio.classList.add('player', 'radio-player');
    audio.type = 'audio/aac';
    audio.volume = 0.5;
    radioVolumeRange.value = audio.volume * 100;
+   radio.appendChild(audio);
 
    radioStop.disabled = true;
 
+   // Меняем иконку кнопки
    const changeIconPlay = () => {
       if (audio.paused) {
          radio.classList.remove('play');
@@ -26,6 +29,27 @@ export const radioPlayerInit = () => {
       }
    };
 
+   // Играем музыку или останавливаем
+   const togglePlay = () => {
+      if (audio.paused) {
+         audio.play();
+      } else {
+         audio.pause();
+      }
+      changeIconPlay();
+   };
+
+   // Играть/останавливать клавишей space
+   const spacePlay = event => {
+      // Если сейчас открыта вкладака радио и кнопка не заморожена
+      if (radio.classList.contains('active') && !radioStop.disabled) {
+         if (event.keyCode === 32) {
+            togglePlay();
+         }
+      }
+   };
+
+   // Выделение текущей проигрывающей станции
    const selectItem = elem => {
       radioItem.forEach(item => item.classList.remove('select'));
       elem.classList.add('select');
@@ -45,16 +69,26 @@ export const radioPlayerInit = () => {
       changeIconPlay();
    })
 
+   // При нажатии на кнопку плеера
    radioStop.addEventListener('click', () => {
+      // Если на пазуе - играем
       if (audio.paused) {
          audio.play();
       } else {
+         // Если играем - на паузку
          audio.pause();
       }
+      // Меняем инонку плеера
       changeIconPlay();
    });
 
+   // Изменение громкости плеера
    radioVolumeRange.addEventListener('input', () => {
       audio.volume = radioVolumeRange.value / 100;
    });
+
+   audio.addEventListener('pause', changeIconPlay);
+   audio.addEventListener('play', changeIconPlay);
+
+   document.body.addEventListener('keydown', spacePlay);
 };

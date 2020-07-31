@@ -1,5 +1,6 @@
 export const videoPlayerInit = () => {
    
+   const video = document.querySelector('.video');
    const videoPlayer = document.querySelector('.video-player');
    const videoButtonPlay = document.querySelector('.video-button__play');
    const videoButtonStop = document.querySelector('.video-button__stop');
@@ -37,9 +38,13 @@ export const videoPlayerInit = () => {
       videoPlayer.currentTime = 0;
    };
 
+   // Играть/останавливать при нажатии space
    const spacePlay = event => {
-      if (event.keyCode === 32) {
-         togglePlay();
+      if (video.classList.contains('active')){
+         // Если нажали на пробел
+         if (event.keyCode === 32) {
+            togglePlay();
+         }
       }
    };
 
@@ -57,12 +62,15 @@ export const videoPlayerInit = () => {
 
       videoProgress.value = (currentTime / duration) * 100;
 
+      // Оставшиеся минуты и секунд
       let minutePassed = Math.floor(currentTime / 60);
       let secondsPassed = Math.floor(currentTime % 60);
 
+      // Сколько всего минут и секунд
       let minuteTotal = Math.floor(duration / 60);
       let secondsTotal = Math.floor(duration % 60);
 
+      // Запись с плеером 
       videoTimePassed.textContent = `${addZero(minutePassed)}:${addZero(secondsPassed)}`;
       videoTimeTotal.textContent = `${addZero(minuteTotal)}:${addZero(secondsTotal)}`;
    });
@@ -74,12 +82,17 @@ export const videoPlayerInit = () => {
       videoPlayer.currentTime = (value * duration) / 100;
    });
 
+   // Видео на полный экран
    videoFullScreen.addEventListener('click', () => {
       videoPlayer.requestFullscreen();
    });
 
+   // Регулировка громкости
    videoVolume.addEventListener('input', () => {
       videoPlayer.volume = videoVolume.value / 100;
    })
+
+   // Нажатие клавиши
+   document.body.addEventListener('keydown', spacePlay);
 
 };

@@ -52,7 +52,7 @@
 		<article class="player-block video">
 			<div class="container">
 				<div class="video-container">
-					<video src="video/rocket_launching.mp4" class="video-player" poster="video/play.svg"></video>
+					<video src="video/rocket_launching.mp4" class="player video-player" poster="video/play.svg"></video>
 					<nav class="video-navigation">
 						<button class="video-button video-button__play fa fa-play"></button>
 						<button class="video-button video-button__stop fa fa-stop"></button>
@@ -75,7 +75,7 @@
 						<img class="audio-img" src="audio/hello.jpg" alt="обложка">
 					</div>
 					<h3 class="audio-header">Крути пластинку</h3>
-					<audio class="audio-player" src="audio/hello.mp3"></audio>
+					<audio class="player audio-player" src="audio/hello.mp3"></audio>
 				</div>
 			</div>
 			<footer class="footer-fix audio-footer">
@@ -91,6 +91,11 @@
 					</div>
 					<span class="audio-time audio-time__total">00:00</span>
 				</nav>
+				<div class="radio-volume music-volume">
+					<span class="fa fa-volume-down video-icon"></span>
+					<input type="range" class="video-volume music-volume__range" min="0" max="100" step="1" value="70">
+					<span class="fa fa-volume-up video-icon"></span>
+				</div>
 			</footer>
 		</article>
 
