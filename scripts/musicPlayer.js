@@ -94,6 +94,23 @@ export const musicPlayerInit = () => {
       }
    };
 
+   // Изменение громкости стрелочками вверх и вниз
+   const changeVolume = event => {
+      if (audio.classList.contains('active')) {
+         // Код кнопки
+         const code = event.keyCode;
+         let step = 5; // Шаг изменения громкости
+         let val = parseInt(musicVolume.value); // Значение громкости бегунка
+         // Увеличиваем громкость стрелочкой вверх
+         if (code === 38) val += step;
+         // Уменьшаем громкость стрелочкой вниз
+         else if (code === 40) val -= step;
+
+         musicVolume.value = val; // Присватваем бегунку значение громкости
+         audioPlayer.volume = musicVolume.value / 100; // Присваиваем значение громкости плееру
+      }
+   };
+
    audioNavigation.addEventListener('click', event => {
       const target = event.target;
 
@@ -175,5 +192,7 @@ export const musicPlayerInit = () => {
    document.body.addEventListener('keydown', spacePlay);
    // Перемотка трека
    document.body.addEventListener('keydown', rewindTrack);
+   // Меняем громкость стрелочками
+   document.body.addEventListener('keydown', changeVolume);
 
 };
