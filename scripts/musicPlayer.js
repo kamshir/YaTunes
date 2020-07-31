@@ -17,20 +17,24 @@ export const musicPlayerInit = () => {
 
    // Делаем красивый вывод времени проигрывания песни
    const addZero = n => n < 10 ? '0' + n : n;
+
+   const togglePlay = () => {
+      const isPlayed = audioPlayer.paused;
+      if (isPlayed) {
+         audioPlayer.play();
+      } else {
+         audioPlayer.pause();
+      }
+   };
    
    // Загрузка песни
    const loadTrack = () => {
-      const isPlayed = audioPlayer.paused;
       const track = playList[trackIndex];
       audioHeader.textContent = track.toUpperCase();
       audioPlayer.src = `./audio/${track}.mp3`;
       audioImg.src = `./audio/${track}.jpg`;
 
-      if (isPlayed) {
-         audioPlayer.pause();
-      } else {
-         audioPlayer.play();
-      }
+      togglePlay();
    };
 
    // Меняем иконку проигрывателя
@@ -66,19 +70,12 @@ export const musicPlayerInit = () => {
       loadTrack();
    };
 
-   // Играем или останавливаемся
-   const togglePlay = () => {
-      if (audioPlayer.paused) {
-         audioPlayer.play();
-      } else {
-         audioPlayer.pause();
-      }
-   };
-
    // Играем/останавливаем плеер клавишей space
    const spacePlay = event => {
       if (audio.classList.contains('active')) {
          if (event.keyCode === 32) {
+            const track = playList[trackIndex];
+            audioHeader.textContent = track.toUpperCase();
             togglePlay();
          }
       }
