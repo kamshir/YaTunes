@@ -84,6 +84,19 @@ export const musicPlayerInit = () => {
       }
    };
 
+   // Перемотка трека в плеере
+   const rewindTrack = event => {
+      if (audio.classList.contains('active')) {
+         // Код кнопки
+         const code = event.keyCode;
+         let step = 5; // Шаг перемотки
+         // Мотаем вперед стрелочкой вправо
+         if (code === 39) audioPlayer.currentTime += step;
+         // Мотаем назад стрелочкой влево
+         else if (code === 37) audioPlayer.currentTime -= step;
+      }
+   };
+
    audioNavigation.addEventListener('click', event => {
       const target = event.target;
 
@@ -163,5 +176,7 @@ export const musicPlayerInit = () => {
    audioPlayer.addEventListener('pause', changeIconPlay);
 
    document.body.addEventListener('keydown', spacePlay);
+   // Перемотка трека
+   document.body.addEventListener('keydown', rewindTrack);
 
 };
